@@ -13,6 +13,8 @@ $(function() {
 				}
 				$(logDefinition).children().remove()
 				$(logDefinition).append(opts)
+				$(updateDefinition).children().remove()
+				$(updateDefinition).append(opts)
 			},
 			setHistory: function() {
 				let history = WorkoutLog.log.workouts
@@ -71,19 +73,7 @@ $(function() {
 					$(updateResult).val(data.result)
 					$(updateDescription).val(data.description)
 					$(updateID).val(data.id)
-					WorkoutLog.log.updateDefinitions()
 				})
-			},
-			updateDefinitions: function() {
-				let defs = WorkoutLog.definition.userDefinitions
-				console.log(defs, "defs")
-				let len = defs.length
-				let opts = ""
-				for (let i = 0; i < len; i++) {
-					opts += "<option value='" + defs[i].id +"'>" + defs[i].description + "</option>"
-				}
-				$(updateDefinition).children().remove()
-				$(updateDefinition).append(opts)
 			},
 			updateWorkout: function() {
 				console.log('test')
@@ -165,8 +155,8 @@ $(function() {
 	$(historyList).on('click', '.remove', WorkoutLog.log.delete)
 	$(logUpdate).on('click', WorkoutLog.log.updateWorkout)
 	$(historyList).on( 'click', '.update', WorkoutLog.log.getWorkout)
-	$(updateDefinition).on( 'click', '.update', WorkoutLog.log.getWorkout)
-	WorkoutLog.log.getWorkout
+	// $(updateDefinition).on( 'click', '.update', WorkoutLog.log.getWorkout)
+	// WorkoutLog.log.getWorkout
 	$(history).on('click').tab('show')
 
 	if(window.localStorage.getItem('sessionToken')) {

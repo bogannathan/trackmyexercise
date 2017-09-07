@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	let WorkoutLog = (function($, undefined) {
-		let API_BASE = "http://localhost:3000/api/"
+		let API_BASE = "https://track-my-workouts.herokuapp.com/"
 		let userDefinitions= []
 
 		//private, gonna stay in the expression. 
