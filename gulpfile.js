@@ -1,23 +1,27 @@
-let gulp = require('gulp')
-let concat = require('gulp-concat')
-let uglify = require('gulp-uglify')
+const gulp = require('gulp');
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify-es').default;
+const sourcemaps = require('gulp-sourcemaps');
+const watch = require('gulp-watch');
 
-let javascriptFiles = [
+const javascriptFiles = [
 	'./app.js',
 	'./workouts/define.js',
 	'./workouts/log.js',
 	'./user/auth.js'
-]
+];
 
 gulp.task('bundle', function() {
 	return gulp.src(javascriptFiles)
-		.pipe(concat('bundle.js'))
-		//squish all files into one file
+		.pipe(sourcemaps.init())
+		.pipe(concat('bundle.js')) // squash files together into bundle.js
 		.pipe(uglify())
-		.pipe(gulp.dest("./dist")) //save the bundle . js
-})
+		.pipe(sourcemaps.write('./maps/'))
+		.pipe(gulp.dest('./dist'));// save into /dist folder
+});
 
-//default task when gulp runs: bundle, starts web server then watches for changes
+gulp.task('watch', function(){
+	gulp.watch(javascriptFiles, ['bundle']);
+});
 
-gulp.task('default', ['bundle'])
-
+gulp.task('default', ['bundle', 'watch']);
