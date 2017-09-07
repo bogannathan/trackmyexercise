@@ -89,6 +89,7 @@ $(function(){
 		loginout: function() {
 			if (window.localStorage.getItem('sessionToken')) {
 				window.localStorage.removeItem('sessionToken')
+				window.location.reload(true)
 				$(loginout).text("Login")
 			}
 		}
@@ -98,7 +99,4 @@ $(function(){
 	$(login).on('click', WorkoutLog.login)
 	$(loginout).on('click', WorkoutLog.loginout)
 
-	if (window.localStorage.getItem('sessionToken')) {
-		$(loginout).text("Logout")
-	}
 })
