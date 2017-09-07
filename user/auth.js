@@ -90,7 +90,6 @@ $(function(){
 			if (window.localStorage.getItem('sessionToken')) {
 				window.localStorage.removeItem('sessionToken')
 				window.location.reload(true)
-				$(loginout).text("Login")
 			}
 		}
 	})
