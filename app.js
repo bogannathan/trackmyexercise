@@ -29,9 +29,9 @@ $(document).ready(function() {
 			e.preventDefault()
 			return false
 		}
-		if (!token) {
-			alert("You must login first")
-		}
+	// 	if (!token) {
+	// 		alert("You must login first")
+	// 	}
 	})
 	//bind ab change events
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
