@@ -59,6 +59,14 @@ $(document).ready(function() {
 	if (token) {
 		WorkoutLog.setAuthHeader(token)
 	}
+	if (!token) {
+		$(define).on('click', 
+			alert("You must login first"))
+		$(log).on('click', 
+			alert("You must login first"))
+		$(history).on('click', 
+			alert("You must login first"))
+	}
 
 	//expose this to the other workoutlog modules 
 	window.WorkoutLog = WorkoutLog

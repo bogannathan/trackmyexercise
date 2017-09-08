@@ -97,5 +97,6 @@ $(function(){
 	$(signup).on('click', WorkoutLog.signup)
 	$(login).on('click', WorkoutLog.login)
 	$(loginout).on('click', WorkoutLog.loginout)
+		$(loginout).text("Logout")
 
 })
