@@ -25,7 +25,7 @@ $(document).ready(function() {
 
 	$(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
 		let token = window.localStorage.getItem('sessionToken')
-		console.log($(this))
+		console.log($(this[0]))
 		console.log(typeof($(this)))
 		if ($(this).hasClass("disabled") && !token) {
 			e.preventDefault()
