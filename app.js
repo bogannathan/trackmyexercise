@@ -25,15 +25,18 @@ $(document).ready(function() {
 
 	$(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
 		let token = window.localStorage.getItem('sessionToken')
-		console.log($(this)[0])
-		console.log(typeof($(this)))
+		console.log($(this)[0], "this[0]")
+		console.log($(this), "this")
 		if ($(this).hasClass("disabled") && !token) {
 			e.preventDefault()
 			return false
 		}
-		if (!token && ($(this)[0] != "<a href='#home' id='loginout' class='' data-toggle='tab' aria-expanded='true'>Login</a>")) {
+		if (!token && $(this).attr('id') != "loginout") {
 			alert("You must login first")
 		}
+		// if (!token && a\#loginout != "<a href='#home' id='loginout' class='' data-toggle='tab' aria-expanded='true'>Login</a>") {
+		// 	alert("You must login first")
+		// }
 	})
 	//bind ab change events
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
