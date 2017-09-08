@@ -34,9 +34,6 @@ $(document).ready(function() {
 		if (!token && $(this).attr('id') != "loginout") {
 			alert("You must login first")
 		}
-		// if (!token && a\#loginout != "<a href='#home' id='loginout' class='' data-toggle='tab' aria-expanded='true'>Login</a>") {
-		// 	alert("You must login first")
-		// }
 	})
 	//bind ab change events
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
