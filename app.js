@@ -31,7 +31,7 @@ $(document).ready(function() {
 			e.preventDefault()
 			return false
 		}
-		if (!token && ($(this) != "a[id=loginout]")) {
+		if (!token && ($(this)[0] != "<a href='#home' id='loginout' class='' data-toggle='tab' aria-expanded='true'>Login</a>")) {
 			alert("You must login first")
 		}
 	})
