@@ -30,7 +30,7 @@ $(document).ready(function() {
 			e.preventDefault()
 			return false
 		}
-		if (!token && ($(this) != a[id="loginout"])) {
+		if (!token && ($(this) != "a[id=loginout]")) {
 			alert("You must login first")
 		}
 	})
