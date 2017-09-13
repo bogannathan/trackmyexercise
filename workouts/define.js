@@ -8,6 +8,7 @@ $(function() {
 					desc: $(defDescription).val(),
 					type: $(defLogtype).val()
 				}
+				
 				let postData = { definition: def}
 				let define = $.ajax({
 					type: "POST",
@@ -18,11 +19,17 @@ $(function() {
 
 				define.done(function(data) {
 					WorkoutLog.definition.userDefinitions.push(data.definition)
-					console.log(data)
 				$(defDescription).val("")
 				$(defLogtype).val("")
 				$('a[href="#log"]').tab("show")
 				})
+			},
+			checkForm: function() {
+				if ($(defDescription).val() != "") {
+					WorkoutLog.definition.create()
+				} else {
+					alert("Please fill out all fields")
+				}
 			},
 			fetchAll: function() {
 				let fetchDefs = $.ajax({
@@ -33,7 +40,7 @@ $(function() {
 					}
 				}).done (function(data) {
 					WorkoutLog.definition.userDefinitions = data
-					console.log(WorkoutLog.definition)
+					// console.log(data)
 				})
 				.fail(function(err) {
 					console.log(err)
@@ -44,7 +51,7 @@ $(function() {
 	})
 
 	// bindings
-	$(defSave).on('click', WorkoutLog.definition.create)
+	$(defSave).on('click', WorkoutLog.definition.checkForm)
 	//fetch definition if we already are authenticated and refreshed
 	if (window.localStorage.getItem('sessionToken')) {
 		WorkoutLog.definition.fetchAll()

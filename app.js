@@ -1,8 +1,11 @@
+let idleTime = 0;
 $(document).ready(function() {
-	let WorkoutLog = (function($, undefined) {
-		let API_BASE = "https://track-my-workouts.herokuapp.com/api/"
-		let userDefinitions= []
+$(logDate).datepicker()
 
+	let WorkoutLog = (function($, undefined) {
+		// let API_BASE = "https://track-my-workouts.herokuapp.com/api/"
+		let API_BASE = "http://localhost:3000/api/"
+		let userDefinitions= []
 		//private, gonna stay in the expression. 
 		let setAuthHeader = function(sessionToken) {
 			window.localStorage.setItem("sessionToken", sessionToken)
@@ -36,6 +39,7 @@ $(document).ready(function() {
 	//bind ab change events
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
 		let target = $(e.target).attr("href")
+		console.log("app.js test")
 		if (target === '#log') { ///when checking for equality, ids must be '#id'
 			WorkoutLog.log.setDefinitions()
 		}
@@ -60,19 +64,15 @@ $(document).ready(function() {
 	//set header
 	let token = window.localStorage.getItem("sessionToken")
 	if (token) {
+		console.log(token + "token test")
 		WorkoutLog.setAuthHeader(token)
 	}
-	// if (!token) {
-	// 	$(define).on('click', 
-	// 		alert("You must login first"))
-	// 	$(log).on('click', 
-	// 		alert("You must login first"))
-	// 	$(history).on('click', 
-	// 		alert("You must login first"))
-	// }
 
 	//expose this to the other workoutlog modules 
 	window.WorkoutLog = WorkoutLog
+	// if(!window.localStorage.getItem('sessionToken')) {
+	// 	WorkoutLog.loginout()
+	// }
 })
 
 // this file gets the info from api/test. it works because onready it runs let test and gets

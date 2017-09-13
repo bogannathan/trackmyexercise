@@ -1,11 +1,9 @@
 $(function() {
-		console.log(WorkoutLog.definition)
 	$.extend(WorkoutLog, {
 		log: {
 			workouts: [],
 			setDefinitions: function() {
 				let defs = WorkoutLog.definition.userDefinitions
-				console.log(defs, "defs")
 				let len = defs.length
 				let opts = ""
 				for (let i = 0; i < len; i++) {
@@ -18,10 +16,8 @@ $(function() {
 			},
 			setHistory: function() {
 				let history = WorkoutLog.log.workouts
-				console.log(history, "history")
 				let len = history.length
 				let lis = ""
-				console.log('setHistoryrunning')
 				for (let i = 0; i < len; i++) {
 					lis += "<li class='list-group-item'>" + 
 					history[i].def + " - " + 
@@ -33,15 +29,24 @@ $(function() {
 				}
 				$(historyList).children().remove()
 				$(historyList).append(lis)
+				WorkoutLog.log.getChart()
+
+			},
+			checkForm: function() {
+				if ($(logDescription).val() != "" && $(logResult).val() != "") {
+					WorkoutLog.log.create()
+				} else {
+					alert("Please fill out all fields")
+				}
 			},
 			create: function () {
 				let itsLog = {
 					desc: $(logDescription).val(),
 					result: $(logResult).val(),
+					date: $(logDate).val(),
 					def: $('#logDefinition option:selected').text()
 				}
 				let postData = {log: itsLog}
-				console.log(postData)
 				let logger = $.ajax({
 					type: "POST",
 					url: WorkoutLog.API_BASE + "log",
@@ -52,14 +57,12 @@ $(function() {
 					WorkoutLog.log.workouts.push(data)
 					$(logDescription).val("")
 					$(logResult).val("")
+					$(logDate).val("")
 					$('a[href="#history"]').tab("show")
 				})
 			},
 			getWorkout: function () {
-				console.log('HEY THIS IS WORKING PROPERLY')
 				let thisLog = {id: $(this).attr('id')}
-				console.log(thisLog)
-				console.log($(this))
 				logID = thisLog.id
 				let updateData = { log: thisLog }
 				let getLog = $.ajax({
@@ -73,18 +76,75 @@ $(function() {
 					$(updateResult).val(data.result)
 					$(updateDescription).val(data.description)
 					$(updateID).val(data.id)
+					$(updateLogDate).val(data.date)
 				})
+
+			},
+			getChart: function() {
+				if (WorkoutLog.log.workouts.length != 3) {
+					$(chartHeader).html("Please enter more logs to see a chart of data")
+				} else {
+					$(chartHeader).html("Time spent running")
+				let ctx = document.getElementById("runningtimeChartTab").getContext('2d');
+				// console.log(WorkoutLog.log.workouts)
+				let lengthArray = []
+				for (let result of WorkoutLog.log.workouts) {
+					// console.log(result)
+					lengthArray.push(result.result)
+				}
+				let dateArray = []
+				for(let result of WorkoutLog.log.workouts) {
+					dateArray.push(result.date)
+				}
+				console.log(lengthArray)
+				console.log(dateArray)
+				let myChart = new Chart(ctx, {
+				    type: 'bar',
+				    data: {
+				        labels: dateArray,
+				        datasets: [{
+				            label: 'Time spent running (minutes)',
+				            data: lengthArray,
+				            backgroundColor: [
+				                'rgba(255, 99, 132, 0.2)',
+				                'rgba(54, 162, 235, 0.2)',
+				                'rgba(255, 206, 86, 0.2)',
+				                'rgba(75, 192, 192, 0.2)',
+				                'rgba(153, 102, 255, 0.2)',
+				                'rgba(255, 159, 64, 0.2)'
+				            ],
+				            borderColor: [
+				                'rgba(255,99,132,1)',
+				                'rgba(54, 162, 235, 1)',
+				                'rgba(255, 206, 86, 1)',
+				                'rgba(75, 192, 192, 1)',
+				                'rgba(153, 102, 255, 1)',
+				                'rgba(255, 159, 64, 1)'
+				            ],
+				            borderWidth: 1
+				        }]
+				    },
+				    options: {
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+				                    beginAtZero:true
+				                }
+				            }]
+				        }
+				    }
+				});
+				}
 			},
 			updateWorkout: function() {
-				console.log('test')
 				// $(update).text("Update")
 				let updateLog = {
 					id: $(updateID).val(),
 					desc: $(updateDescription).val(),
 					result: $(updateResult).val(),
+					date: $(updateLogDate).val(),
 					def: $("#updateDefinition option:selected").text()
 				}
-				console.log(updateLog, "updateLog")
 				for(var i = 0; i < WorkoutLog.log.workouts.length; i++){
 					if(WorkoutLog.log.workouts[i].id == updateLog.id){
 						WorkoutLog.log.workouts.splice(i, 1)
@@ -100,7 +160,6 @@ $(function() {
 				})
 
 				updater.done(function(data) {
-					console.log(data)
 					$(updateDescription).val("")
 					$(updateResult).val("")
 					$('a[href="#history"]').tab("show")
@@ -141,9 +200,7 @@ $(function() {
 					}
 				})
 				.done(function(data) {
-					console.log('test log.jsworkouts')
 						WorkoutLog.log.workouts = data 
-						console.log(data)
 				})
 				.fail(function(err) {
 						console.log(err)
@@ -151,7 +208,8 @@ $(function() {
 			}
 		}
 	})
-	$(logSave).on('click', WorkoutLog.log.create)
+	$(logSave).on('click', WorkoutLog.log.checkForm)
+	WorkoutLog.log.getChart()
 	$(historyList).on('click', '.remove', WorkoutLog.log.delete)
 	$(logUpdate).on('click', WorkoutLog.log.updateWorkout)
 	$(historyList).on( 'click', '.update', WorkoutLog.log.getWorkout)
