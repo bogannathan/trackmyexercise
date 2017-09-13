@@ -14,14 +14,16 @@ $(function() {
 				$(updateDefinition).children().remove()
 				$(updateDefinition).append(opts)
 			},
-			setHistory: function() {
-				let history = WorkoutLog.log.workouts
-				let len = history.length
+			setHistory: function(data) {
+				console.log(data)
+				let history = data
+				let len = data.length
 				let lis = ""
 				for (let i = 0; i < len; i++) {
 					lis += "<li class='list-group-item'>" + 
-					history[i].def + " - " + 
-					history[i].result + " " +
+					history[i].def + ", " + 
+					history[i].date + " - " +
+					history[i].time + " minutes" +
 					"<div class='pull-right'>" +
 						"<button id='" + history[i].id + "' class='update'><strong>U</strong></button>" +
 						"<button id='" + history[i].id + "' class='remove'><string>X</strong></button>" +
@@ -29,8 +31,6 @@ $(function() {
 				}
 				$(historyList).children().remove()
 				$(historyList).append(lis)
-				WorkoutLog.log.getChart()
-
 			},
 			checkForm: function() {
 				if ($(logDescription).val() != "" && $(logResult).val() != "") {
@@ -81,59 +81,106 @@ $(function() {
 
 			},
 			getChart: function() {
-				if (WorkoutLog.log.workouts.length != 3) {
+				if (WorkoutLog.log.workouts.length < 3) {
 					$(chartHeader).html("Please enter more logs to see a chart of data")
 				} else {
-					$(chartHeader).html("Time spent running")
-				let ctx = document.getElementById("runningtimeChartTab").getContext('2d');
-				// console.log(WorkoutLog.log.workouts)
-				let lengthArray = []
-				for (let result of WorkoutLog.log.workouts) {
-					// console.log(result)
-					lengthArray.push(result.result)
-				}
-				let dateArray = []
-				for(let result of WorkoutLog.log.workouts) {
-					dateArray.push(result.date)
-				}
-				console.log(lengthArray)
-				console.log(dateArray)
-				let myChart = new Chart(ctx, {
-				    type: 'bar',
-				    data: {
-				        labels: dateArray,
-				        datasets: [{
-				            label: 'Time spent running (minutes)',
-				            data: lengthArray,
-				            backgroundColor: [
-				                'rgba(255, 99, 132, 0.2)',
-				                'rgba(54, 162, 235, 0.2)',
-				                'rgba(255, 206, 86, 0.2)',
-				                'rgba(75, 192, 192, 0.2)',
-				                'rgba(153, 102, 255, 0.2)',
-				                'rgba(255, 159, 64, 0.2)'
-				            ],
-				            borderColor: [
-				                'rgba(255,99,132,1)',
-				                'rgba(54, 162, 235, 1)',
-				                'rgba(255, 206, 86, 1)',
-				                'rgba(75, 192, 192, 1)',
-				                'rgba(153, 102, 255, 1)',
-				                'rgba(255, 159, 64, 1)'
-				            ],
-				            borderWidth: 1
-				        }]
-				    },
-				    options: {
-				        scales: {
-				            yAxes: [{
-				                ticks: {
-				                    beginAtZero:true
-				                }
-				            }]
-				        }
-				    }
-				});
+					$(chartHeader).html("Progression of time spent running")
+					let ctx = document.getElementById("runningtimeChartTab").getContext('2d');
+					// console.log(WorkoutLog.log.workouts)
+					let lengthArray = []
+					for (let result of WorkoutLog.log.workouts) {
+						// console.log(result)
+						let time = result.result
+						let id = result.id
+						let def = result.def
+						let lengthDateOrder = result.date.replace(/\D/g, '')
+						lengthArray.push({
+							time,
+							id,
+							def,
+							lengthDateOrder
+						})
+					}
+					console.log(lengthArray)
+					console.log('lengthArray')
+					lengthArray.sort(function(a, b) {
+	    				return parseFloat(a.lengthDateOrder) - parseFloat(b.lengthDateOrder);
+					})
+					let newlengthArray = lengthArray.map(function(a) {return a.time;})
+
+					// console.log(lengthArray)
+
+					let dateArray = []
+					for(let result of WorkoutLog.log.workouts) {
+						let date = result.date
+						let dateOrder = result.date.replace(/\D/g, '')
+						dateArray.push({
+							date,
+							dateOrder
+						})
+					}
+					dateArray.sort(function(a, b) {
+	    				return parseFloat(a.dateOrder) - parseFloat(b.dateOrder);
+					});
+					let newdateArray = dateArray.map(function(a) {return a.date;})
+					// console.log(dateArray.sort())
+					// console.log(dateArray[3])
+					let finalArray = []
+					// let obj = {};
+					// dateArray.forEach(function(i) {
+		   // 				 let obj = {
+		   // 				 	dateArray[i],
+		   // 				 	lengthArray
+		   // 				 }
+		   // 				 // console.log(obj)
+		   // 				 					finalArray.push(obj)
+
+					// });
+					for (let i in dateArray) {
+						let obj ={}
+						Object.assign(obj, dateArray[i], lengthArray[i])
+						// console.log(obj)
+						// console.log(i)
+						finalArray.push(obj)
+					}
+					// console.log(finalArray)
+					WorkoutLog.log.setHistory(finalArray)
+					let myChart = new Chart(ctx, {
+					    type: 'bar',
+					    data: {
+					        labels: newdateArray,
+					        datasets: [{
+					            label: 'Time spent running (minutes)',
+					            data: newlengthArray,
+					            backgroundColor: [
+					                'rgba(255, 99, 132, 0.2)',
+					                'rgba(54, 162, 235, 0.2)',
+					                'rgba(255, 206, 86, 0.2)',
+					                'rgba(75, 192, 192, 0.2)',
+					                'rgba(153, 102, 255, 0.2)',
+					                'rgba(255, 159, 64, 0.2)'
+					            ],
+					            borderColor: [
+					                'rgba(255,99,132,1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(75, 192, 192, 1)',
+					                'rgba(153, 102, 255, 1)',
+					                'rgba(255, 159, 64, 1)'
+					            ],
+					            borderWidth: 1
+					        }]
+					    },
+					    options: {
+					        scales: {
+					            yAxes: [{
+					                ticks: {
+					                    beginAtZero:true
+					                }
+					            }]
+					        }
+					    }
+					});
 				}
 			},
 			updateWorkout: function() {
@@ -152,6 +199,8 @@ $(function() {
 				}
 				WorkoutLog.log.workouts.push(updateLog)
 				let updateLogData = { log: updateLog }
+				console.log('log update test')
+				console.log(updateLogData)
 				let updater = $.ajax({
 					type: "PUT",
 					url: WorkoutLog.API_BASE + "log",

@@ -140,47 +140,63 @@ $(function(){
 			let newNav = "<li><a href='#userTab' data-toggle='tab' class=''>Welcome " + user.fullname + "!" + "</a></li>"
 			$(mainNavigation).append(newNav)
 			$(profileUsername).html(user.username)
-			$(profilePassword).html("Click here to change")
+			$(profileUpdater).html("Click here to update profile")
 			$(profileFullname).html(user.fullname)
 			$(profileSummary).html(user.summary)
 			$(profileAge).html(user.age)
 			$(profileGender).html(user.gender)
 		},
-
-		updatePassword: function(data) {
-			console.log(data)
-			console.log('data test')
-			console.log(data.id)
-			if ($(updatePasswordMain).val() == $(updatePasswordConfirm).val()) {
-				let username = data.username
-				let password = $(updatePasswordMain).val()
-				let fullname = data.fullname
-				let summary = data.summary
-				let age = data.age
-				let gender = data.gender
-				let id = data.id
-			//user object
-				let user = {user: 
-					{
-						id: id,
-						username: username,
-						password: password,
-						fullname: fullname,
-						summary: summary,
-						age: age,
-						gender: gender
+		fillUpdateProfile: function(data) {
+			$(update_username).val(data.username)
+			$(update_password).val()
+			$(update_confirmpassword).val()
+			$(update_fullname).val(data.fullname)
+			$(update_summary).val(data.summary)
+			$(update_age).val(data.age)
+			$(update_gender).val(data.gender)
+		},
+		updateProfile: function() {
+			if ($(update_password).val() == $(update_confirmpassword).val()) {
+				if (($(update_username).val() != "" && $(update_confirmpassword).val() != "" && $(update_password).val() != "" && $(update_fullname).val() != "" && $(update_summary).val() != "" && $(update_age).val() != "" && $(update_gender).val() != "" && typeof($(update_age)) == integer)) {
+					let username = $(update_username).val()
+					let password = $(update_password).val()
+					let fullname = $(update_fullname).val()
+					let summary = $(update_summary).val()
+					let age = $(update_age).val()
+					let gender = $(update_gender).val()
+					let id = retrievedProfile.id
+				//user object
+					let user = {user: 
+						{
+							id: id,
+							username: username,
+							password: password,
+							fullname: fullname,
+							summary: summary,
+							age: age,
+							gender: gender
+						}
 					}
-				}
-				console.log('user test')
-				console.log(user)
+					console.log('user                         test')
+					console.log(user)
 
-				//signup post
-				let signup = $.ajax({
-					type: "PUT",
-					url: WorkoutLog.API_BASE + "user",
-					data: JSON.stringify(user),
-					contentType:"application/json"
-				})
+					//signup post
+					let updater = $.ajax({
+						type: "PUT",
+						url: WorkoutLog.API_BASE + "user",
+						data: JSON.stringify(user),
+						contentType:"application/json"
+					})
+					updater.done(function(data){
+						alert("You have successfully updated your profile!")
+						window.location.reload(true)
+					})
+					.fail(function(data){
+						alert("There was an issue with updating. Please log in and try again")
+					})
+				} else {
+					alert("Please fill out all fields and confirm age is a number")
+				}
 			} else {
 				alert("Passwords do not match")
 			}
@@ -194,6 +210,7 @@ $(function(){
 		retrievedProfile = JSON.parse(localStorage.profile)
 	WorkoutLog.profileInformation(retrievedProfile)
 	}
+	// $(profileUpdater).on('click', WorkoutLog.updateProfile(retrievedProfile))
 	$(login).on('click', WorkoutLog.login)
 	$(loginout).on('click', WorkoutLog.loginout)
 	if (window.localStorage.getItem('sessionToken')) {
@@ -210,9 +227,10 @@ $(function(){
 	// })
 	}
 	console.log(retrievedProfile, "second test")
-		$(updatePassword).on('click', function() {
-		WorkoutLog.updatePassword(retrievedProfile)
+	$(profileUpdater).on('click', function() {
+		WorkoutLog.fillUpdateProfile(retrievedProfile)
 	})
+	$(updateProfile).on('click', WorkoutLog.updateProfile)
 	let idleInterval = setInterval(timerIncrement, 5000); // 
 
 	    //Zero the idle timer on mouse movement.

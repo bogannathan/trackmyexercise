@@ -1,6 +1,6 @@
 let idleTime = 0;
 $(document).ready(function() {
-$(logDate).datepicker()
+$(logDate).datepicker({ dateFormat: 'yy/mm/dd' })
 
 	let WorkoutLog = (function($, undefined) {
 		// let API_BASE = "https://track-my-workouts.herokuapp.com/api/"
@@ -47,7 +47,7 @@ $(logDate).datepicker()
 			WorkoutLog.log.setDefinitions()
 		}
 		if (target === '#history') {
-			WorkoutLog.log.setHistory()
+			WorkoutLog.log.getChart()
 		}
 	})
 	//bind enter key
