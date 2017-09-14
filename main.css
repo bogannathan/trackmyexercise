@@ -2,30 +2,26 @@ label textarea {
 	vertical-align: top;
 }
 
-#signupForm {
+.profileForm {
 	display: table;
 }
 
-#signupForm p {
+.profileForm p {
 	display: table-row;
 }
 
-#signupForm label {
+.profileForm label {
 	display: table-cell;
 }
 
-#signupForm input {
+.profileForm input {
 	display: table-cell;
 }
 
-#signupForm textarea {
+.profileForm textarea {
 	display: table-cell;
 }
 
-.noPadding {
-	padding: 0px !important;
-	border: 0px !important;
-}
 
 .nav-tabs>li.active>a{
 	color: green;
@@ -34,3 +30,94 @@ label textarea {
 #profilePassword:hover {
  cursor:pointer;
 }
+
+#profileUpdater:hover {
+	cursor: pointer;
+}
+
+.summaryBox {
+	width: 175% !important;
+}
+
+#loginPage {
+	text-align: center
+}
+
+#navbarHolder {
+	/*background: lightgrey;*/
+	border-radius: 5px;
+}
+
+#topNavBar {
+	background: white;
+	border-radius: 50px;
+}
+
+#loginDiv {
+	border-radius: 5px;
+	width: 60%;
+	text-align: center;
+}
+
+#loginForm {
+	margin-top: 15px;
+	text-align: center;
+}
+
+#loginPage {
+/*	background: url('/img/drops.jpg');
+	background-size: 100%;*/
+	/*color: white;*/
+}
+
+body {
+        background: url('img/running.jpeg') no-repeat top center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+}
+
+#topNavBar {
+   background-color: transparent;
+   background: transparent;
+   border-color: transparent;
+}
+
+#mainNavigation > li {
+	border-color: transparent;
+
+}
+
+#NavBar li { color: #000 } 
+
+.nav-tabs > li.active > a, .nav-tabs > .active > a:hover {
+  border: none !important;
+  border-radius: 4px;
+}
+
+.nav-tabs>li>a:hover {
+	background-color: transparent;
+	border-bottom-color: transparent;
+}
+
+.form-control {
+	width: 75%;
+}
+
+#loginForm .form-control{
+	width: 100%;
+}
+
+.li .div .button {
+	margin: 3px;
+}
+
+.logHistoryLink {
+	padding: 10px;
+}
+
+div a:hover {
+	cursor: pointer;
+}
+

@@ -15,18 +15,17 @@ $(function() {
 				$(updateDefinition).append(opts)
 			},
 			setHistory: function(data) {
-				console.log(data)
 				let history = data
 				let len = data.length
 				let lis = ""
 				for (let i = 0; i < len; i++) {
-					lis += "<li class='list-group-item'>" + 
+					lis += "<li class='list-group-item' style='height: auto;'>" + 
 					history[i].def + ", " + 
 					history[i].date + " - " +
 					history[i].time + " minutes" +
-					"<div class='pull-right'>" +
-						"<button id='" + history[i].id + "' class='update'><strong>U</strong></button>" +
-						"<button id='" + history[i].id + "' class='remove'><string>X</strong></button>" +
+					"<div style='float: right'>" +
+						"<a style='margin-left: 30px !important; height: 100%;' id='" + history[i].id + "' class='update logHistoryLink'><strong>U</strong></a>" +
+						"<a id='" + history[i].id + "' class='remove logHistoryLink'><strong>X</strong></a>" +
 					"</div></li>"
 				}
 				$(historyList).children().remove()
@@ -58,7 +57,7 @@ $(function() {
 					$(logDescription).val("")
 					$(logResult).val("")
 					$(logDate).val("")
-					$('a[href="#history"]').tab("show")
+					// $('a[href="#history"]').tab("show")
 				})
 			},
 			getWorkout: function () {
@@ -86,10 +85,8 @@ $(function() {
 				} else {
 					$(chartHeader).html("Progression of time spent running")
 					let ctx = document.getElementById("runningtimeChartTab").getContext('2d');
-					// console.log(WorkoutLog.log.workouts)
 					let lengthArray = []
 					for (let result of WorkoutLog.log.workouts) {
-						// console.log(result)
 						let time = result.result
 						let id = result.id
 						let def = result.def
@@ -101,14 +98,11 @@ $(function() {
 							lengthDateOrder
 						})
 					}
-					console.log(lengthArray)
-					console.log('lengthArray')
 					lengthArray.sort(function(a, b) {
 	    				return parseFloat(a.lengthDateOrder) - parseFloat(b.lengthDateOrder);
 					})
 					let newlengthArray = lengthArray.map(function(a) {return a.time;})
 
-					// console.log(lengthArray)
 
 					let dateArray = []
 					for(let result of WorkoutLog.log.workouts) {
@@ -123,27 +117,12 @@ $(function() {
 	    				return parseFloat(a.dateOrder) - parseFloat(b.dateOrder);
 					});
 					let newdateArray = dateArray.map(function(a) {return a.date;})
-					// console.log(dateArray.sort())
-					// console.log(dateArray[3])
 					let finalArray = []
-					// let obj = {};
-					// dateArray.forEach(function(i) {
-		   // 				 let obj = {
-		   // 				 	dateArray[i],
-		   // 				 	lengthArray
-		   // 				 }
-		   // 				 // console.log(obj)
-		   // 				 					finalArray.push(obj)
-
-					// });
 					for (let i in dateArray) {
 						let obj ={}
 						Object.assign(obj, dateArray[i], lengthArray[i])
-						// console.log(obj)
-						// console.log(i)
 						finalArray.push(obj)
 					}
-					// console.log(finalArray)
 					WorkoutLog.log.setHistory(finalArray)
 					let myChart = new Chart(ctx, {
 					    type: 'bar',
@@ -199,8 +178,6 @@ $(function() {
 				}
 				WorkoutLog.log.workouts.push(updateLog)
 				let updateLogData = { log: updateLog }
-				console.log('log update test')
-				console.log(updateLogData)
 				let updater = $.ajax({
 					type: "PUT",
 					url: WorkoutLog.API_BASE + "log",

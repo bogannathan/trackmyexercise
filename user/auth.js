@@ -1,6 +1,5 @@
 $(function(){
 	let userProfile;
-	console.log('test')
 
 	$.extend(WorkoutLog, { //.extend pulls the contents of app.js's WorkoutLog variable
 		//signup method
@@ -54,7 +53,6 @@ $(function(){
 					WorkoutLog.definition.fetchAll()
 					WorkoutLog.log.fetchAll()
 				}
-				console.log(data)
 				$(signupModal).modal("hide")
 				$('.disabled').removeClass("disabled")
 				$(loginout).text("Logout")
@@ -77,7 +75,6 @@ $(function(){
 			// login variables
 			let username = $(li_username).val()
 			let password = $(li_password).val()
-
 			user = {user: 
 				{
 					username: username,
@@ -104,9 +101,10 @@ $(function(){
 				$(loginout).text('Logout')
 				$('.invisible').removeClass('invisible') 	
 				localStorage.setItem('profile', JSON.stringify(data.user));
-				console.log(data.user)
 				$('a[href="#home"]').tab('show')
+				$('loginPage').tab('hide')
 				document.getElementById("home").className = "tab-pane active"
+				$(homeNav).click()
 				WorkoutLog.profileInformation(data.user)
 				alert("You have successfully logged in!")
 				window.location.reload(true)
@@ -121,18 +119,14 @@ $(function(){
 			$(defineNav).html("Define")
 			$(logNav).html("Log")
 			$(historyNav).html("View History")
-			$(homeNav).removeClass("noPadding")
-			$(defineNav).removeClass("noPadding")
-			$(logNav).removeClass('noPadding')
-			$(historyNav).removeClass('noPadding')
-			console.log('nav')
+			$('.invisible').removeClass('invisible') 
 		},
 		//loginout method
 		loginout: function() {
-			// if (window.localStorage.getItem('sessionToken')) {
+			if (window.localStorage.getItem('sessionToken')) {
 				window.localStorage.clear()
 				window.location.reload(true)
-			// }
+			}
 		}, 
 
 		profileInformation: function(data) {
@@ -177,10 +171,6 @@ $(function(){
 							gender: gender
 						}
 					}
-					console.log('user                         test')
-					console.log(user)
-
-					//signup post
 					let updater = $.ajax({
 						type: "PUT",
 						url: WorkoutLog.API_BASE + "user",
@@ -204,36 +194,26 @@ $(function(){
 	})
 	//bind events
 	$(signup).on('click', WorkoutLog.checkForm)
-	console.log(localStorage)
-	let retrievedProfile
-	if (localStorage.length != 0){
-		retrievedProfile = JSON.parse(localStorage.profile)
-	WorkoutLog.profileInformation(retrievedProfile)
+	let retrievedProfile = localStorage.profile
+	if (localStorage.length != 0 && typeof(retrievedProfile) !== 'object' && typeof(retrievedProfile) !== null){
+		retrievedProfile = JSON.parse(retrievedProfile)
+		WorkoutLog.profileInformation(retrievedProfile)
 	}
-	// $(profileUpdater).on('click', WorkoutLog.updateProfile(retrievedProfile))
 	$(login).on('click', WorkoutLog.login)
 	$(loginout).on('click', WorkoutLog.loginout)
 	if (window.localStorage.getItem('sessionToken')) {
-		console.log('anything')
 		$(loginout).text("Logout")
-		// retrievedProfile = JSON.parse(retrievedProfile)
-		console.log(retrievedProfile + "retrievedProfile test")
 		WorkoutLog.makeNavBar()
 		$('.invisible').removeClass('invisible')
 		document.getElementById("home").className = "tab-pane active"
 		document.getElementById("loginPage").className = "tab-pane fade"
-		// $(updatePassword).on('click', function() {
-		// WorkoutLog.updatePassword(retrievedProfile)
-	// })
 	}
-	console.log(retrievedProfile, "second test")
 	$(profileUpdater).on('click', function() {
 		WorkoutLog.fillUpdateProfile(retrievedProfile)
 	})
 	$(updateProfile).on('click', WorkoutLog.updateProfile)
 	let idleInterval = setInterval(timerIncrement, 5000); // 
 
-	    //Zero the idle timer on mouse movement.
     $(this).mousemove(function (e) {
         idleTime = 0;
     });
@@ -246,13 +226,12 @@ $(function(){
 	    if (idleTime > 30 && window.localStorage.getItem('sessionToken')) { // 20 minutes
 	        alert("You have been logged out due to inactivity.")
 	        WorkoutLog.loginout()
-	        console.log("timer inc work auth")
 	    }
 	}
-	if (!window.localStorage.getItem('sessionToken')) {
-		document.getElementById('loginPage').className = 'tab-pane active'
-		document.getElementById('listLoginout').className = 'active'
-		window.localStorage.clear()
-	}
+	// if (!window.localStorage.getItem('sessionToken')) {
+	// 	document.getElementById('loginPage').className = 'tab-pane active'
+	// 	document.getElementById('listLoginout').className = 'active'
+	// 	window.localStorage.clear()
+	// }
 
 })

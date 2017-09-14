@@ -1,10 +1,11 @@
 let idleTime = 0;
 $(document).ready(function() {
+let retrievedProfile
 $(logDate).datepicker({ dateFormat: 'yy/mm/dd' })
 
 	let WorkoutLog = (function($, undefined) {
-		// let API_BASE = "https://track-my-workouts.herokuapp.com/api/"
-		let API_BASE = "http://localhost:3000/api/"
+		let API_BASE = "https://exertrack-server.herokuapp.com/api/"
+		// let API_BASE = "http://localhost:3000/api/"
 		let userDefinitions= []
 		//private, gonna stay in the expression. 
 		let setAuthHeader = function(sessionToken) {
@@ -39,7 +40,6 @@ $(logDate).datepicker({ dateFormat: 'yy/mm/dd' })
 	//bind ab change events
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
 		let target = $(e.target).attr("href")
-		console.log("app.js test")
 		if (target === '#log') { ///when checking for equality, ids must be '#id'
 			WorkoutLog.log.setDefinitions()
 		}
@@ -64,8 +64,11 @@ $(logDate).datepicker({ dateFormat: 'yy/mm/dd' })
 	//set header
 	let token = window.localStorage.getItem("sessionToken")
 	if (token) {
-		console.log(token + "token test")
 		WorkoutLog.setAuthHeader(token)
+		$(homeNav).click()
+		// $(loginPage).hide()
+	} else {
+		$(loginout).click()
 	}
 
 	//expose this to the other workoutlog modules 

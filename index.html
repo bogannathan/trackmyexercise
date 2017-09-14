@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device=width, initial-scale-1">
 
-		<title>Workout Log</title>
+		<title>ExerTrack</title>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
 
 <!-- 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
@@ -22,33 +22,50 @@
 
 	</head>
 
-	<body>
+	<body> <div id="contentWrapper">
 	<div id="topNavBar">
-		<ul id="mainNavigation" class="nav nav-tabs">
-			<li id="listLoginout"><a href="#loginPage" id="loginout" class="" data-toggle="tab">Login</a></li>
-			<li id="listHomeNav" class="invisible"><a href="#home" id="homeNav" class="" data-toggle="tab"></a></li>
-			<li><a href="#define" id="defineNav" data-toggle="tab" class="invisible"></a></li>
-			<li><a href="#log" id="logNav" data-toggle="tab" class="invisible"></a></li>
-			<li><a href="#history" id="historyNav" data-toggle="tab" class="invisible" ></a></li>
-			<a href="#updateLog" data-toggle="tab" class="" type="hidden"></a>
-		</ul>
+		<div class='container'>
+			<ul id="mainNavigation" class="nav nav-tabs" style="border-color: transparent;">
+				<li id="listLoginout" class="invisible"><a href="#loginPage" id="loginout" class="" data-toggle="tab">Login</a></li>
+				<li id="listHomeNav" class="invisible"><a href="#home" id="homeNav" class="" data-toggle="tab"></a></li>
+				<li><a href="#define" id="defineNav" data-toggle="tab" class="invisible"></a></li>
+				<li><a href="#log" id="logNav" data-toggle="tab" class="invisible"></a></li>
+				<li><a href="#history" id="historyNav" data-toggle="tab" class="invisible" ></a></li>
+				<a href="#updateLog" data-toggle="tab" class="" type="hidden"></a>
+			</ul>
+		</div>
 	</div>
-	<div class="container-fluid" style="">
+	<div class="container" style="">
 		<div class="tab-content">
-			<div class="tab-pane fade" id="loginPage">
-				<h2>Workout Log</h2>
-				<div id="forLogin">
-					<button data-toggle="modal" data-target="#loginModal" class="btn btn-primary">Login</button>
-					<button data-toggle="modal" data-target="#signupModal" class="btn btn-primary">Sign Up</button>
+			<div class="container tab-pane" id="loginPage">
+				<div class="container" id="navbarHolder">
+					<div id="loginDiv" class="container" >
+						<h2>ExerTrack</h2>
+						<h4>The next generation of exercise management</h4>
+					</div>
 				</div>
-				<div id="forLogout" style="display:none;">
-					<button class="btn btn-primary">Logout</button>
+				<div id="loginDiv2" class="container">
+					<div style="display: inline-block; text-align: center;">
+						<form class="profileForm" style="text-align: center;" id="loginForm" >
+							<p><label for="li_username" style="text-align: center;">Username:</label>
+							<input class="form-control" id="li_username"/></p><br>
+							<p><label for="li_password" style="text-align: center;">Password:</label>
+							<input class="form-control" type="password" id="li_password"/></p><br>
+						</form>
+						<button type="button" style="float: left;" class="btn btn-secondary" data-dismiss="modal" id="switchToSignup" data-target="#signupModal" data-toggle="modal">Need to sign up?</button>
+						<button class="btn btn-primary" style="float: right;" id="login" type="button">Login</button>
+					</div>
+			<!-- 		<div style="display: inline-block; text-align: center; margin-top: 10px;">
+					</div> -->
+				</div>
+				<div class="">
+					
 				</div>
 			</div>
 
-
 			<div id="home" class="tab-pane fade">
-				<h2>Workout Log check</h2>
+				<h2>Remember why you are here!</h2>
+				<p>You are here to run. </p>
 				
 			</div>
 
@@ -66,7 +83,7 @@
 						<option>Reps</option>
 					</select>
 					</form>
-					<button id="defSave" class="btn btn-primary">Save</button>
+					<button id="defSave" class="btn btn-primary" style="margin-top: 10px;">Save</button>
 			</div>
 
 			<div class="tab-pane fade" id="log">
@@ -80,7 +97,7 @@
 				<p><input type="text" class="form-control" id="logDate"></p>
 				<label>notes</label>
 				<textarea class="form-control" id="logDescription" rows="3"></textarea>
-				<button id="logSave" class="btn btn-primary">Save</button>
+				<button id="logSave" class="btn btn-primary" style="margin-top: 10px;">Save</button>
 			</div>
 
 			<div id="updateLog" class="tab-pane fade">
@@ -96,31 +113,35 @@
 				<label>notes</label>			
 				<textarea class="form-control" id="updateDescription" rows="3"></textarea>
 				<br />
-				<button id="logUpdate" class="btn btn-primary">Save</button>
+				<button id="logUpdate" class="btn btn-primary" style="margin-top: 10px;">Save</button>
 			</div>
 
 			<div class="tab-pane fade" id="history">
-				<h2>History</h2>
-				<ul class="list-group" id="historyList">
-				</ul>
+				<h2 style="text-align: center;">History</h2>
+				<div class="container">	
+					<div style=>
+						<ul class="list-group" style="display:table; margin:0 auto;" id="historyList">
+						</ul>
+					</div>
+				</div>
 
-				<h2 id="chartHeader">Time spent running</h2>
-					<canvas id="runningtimeChartTab" width="3200" height="900"></canvas>
+				<h2 id="chartHeader" style="float: right">Time spent running</h2>
+					<canvas id="runningtimeChartTab" width="3200" height="900" style="background-color: white; border-radius: 4px;"></canvas>
 			</div>
 
 			<div id="userTab" class="tab-pane fade">
 				<h4>User information</h4>
 				<label id="profile"></label>
-				<form id="updateProfileForm">
-					<a id="profileUpdater" for="profilePassword" data-toggle="modal" data-target="#updateProfileModal" ></a>
+<!-- 				<form id="updateProfileForm">
+ -->					<a id="profileUpdater" for="profilePassword" data-toggle="modal" data-target="#updateProfileModal" ></a>
 					<p><label>Username: </label><p id="profileUsername"></p></p><br>
 					<p><label>Password: </label></p><br>
 					<p><label>Full Name: </label><p id="profileFullname"></p></p><br>
-					<p><label>Why I am here: </label><p id="profileSummary"></p></p><br>						
+					<p><label>Why I am here: </label><p class="summaryBox" id="profileSummary"></p></p><br>						
 					<p><label>Age: </label><p id="profileAge"></p></p><br>
 					<p><label>Gender: </label><p id="profileGender"></p></p>
 
-				</form>
+				<!-- </form> -->
 
 			</div>
 
@@ -133,7 +154,7 @@
 						</div>
 						<div class="modal-body">
 							<div class="alert alert-danger" style="display: none;" role="alert" id="su_error"></div>
-								<form id="signupForm">
+								<form class="profileForm" id="signupForm">
 								<p><label for="su_username">Username: </label>
 								<input id="su_username" class="form-control" /></p> <br>
 								<p><label for="su_password">Password: </label>
@@ -143,7 +164,7 @@
 								<p><label for="su_fullname">Full name: </label>
 								<input type="fullname" class="form-control" id="su_fullname"/></p><br>
 
-								<p><label for="su_summary">Why are you here? </label><textarea type="summary" class="form-control" id="su_summary" rows="3"></textarea></p><br>
+								<p><label for="su_summary">Why are you here? </label><textarea type="summary" class="form-control summaryBox" id="su_summary" rows="3"></textarea></p><br>
 									
 
 								<p><label for="su_age">Age: </label>
@@ -159,6 +180,7 @@
 								</form>
 						</div>
 						<div class="modal-footer">
+							<button type="button" style="float: left;" class="btn btn-secondary" data-dismiss="modal" id="switchToLogin" data-target="#loginModal" data-toggle="modal">Already have an account?</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 							<button class="btn btn-primary" id="signup" type="button">Sign Up</button>
 						</div>
@@ -175,12 +197,15 @@
 						</div>
 						<div class="modal-body">
 							<div class="alert alert-danger" style="display: none;" role="alert" id="li_error"></div>
-							<label for="li_username">Username</label>
-							<input class="form-control" id="li_username"/>
-							<label for="li_password">Password:</label>
-							<input class="form-control" type="password" id="li_password"/>
+							<form class="profileForm" id="loginForm">
+								<p><label for="li_username">Username:</label>
+								<input class="form-control" id="li_username"/></p><br>
+								<p><label for="li_password">Password:</label>
+								<input class="form-control" type="password" id="li_password"/></p><br>
+							</form>
 						</div>
 						<div class="modal-footer">
+							<button type="button" style="float: left;" class="btn btn-secondary" data-dismiss="modal" id="switchToSignup" data-target="#signupModal" data-toggle="modal">Need to sign up?</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 							<button class="btn btn-primary" id="login" type="button">Login</button>
 						</div>
@@ -196,7 +221,7 @@
 							<h4 class="modal-title">Update Profile</h4>
 						</div>
 						<div class="modal-body">
-							<form id="updateProfileForm">
+							<form class="profileForm" id="updateProfileForm">
 								<p><label for="update_username">Username: </label>
 								<input id="update_username" class="form-control" /></p> <br>
 								<p><label for="update_password">Password: </label>
@@ -206,7 +231,7 @@
 								<p><label for="update_fullname">Full name: </label>
 								<input type="fullname" class="form-control" id="update_fullname"/></p><br>
 
-								<p><label for="update_summary">Why are you here? </label><textarea type="summary" class="form-control" id="update_summary" rows="3"></textarea></p><br>
+								<p><label for="update_summary">Why are you here? </label><textarea type="summary" class="form-control summaryBox" id="update_summary" rows="3"></textarea></p><br>
 									
 
 								<p><label for="update_age">Age: </label>
@@ -230,7 +255,7 @@
 			</div>
 		</div>
 	</div>
-		
+	</div>	
 		<script src="./bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script src="./bower_components/jquery-ui/jquery-ui.min.js"></script>
