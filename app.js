@@ -4,7 +4,7 @@ let retrievedProfile
 $(logDate).datepicker({ dateFormat: 'yy/mm/dd' })
 
 	let WorkoutLog = (function($, undefined) {
-		let API_BASE = "https://exertrack-server.herokuapp.com/api/"
+		let API_BASE = "https://exertrack-server.herokuapp.com/"
 		// let API_BASE = "http://localhost:3000/api/"
 		let userDefinitions= []
 		//private, gonna stay in the expression. 
